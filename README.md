@@ -42,3 +42,16 @@ Cry
 
 Wireframe for what the game can look like. Graphics may not reflect the final product.
 [Wireframe Image](project1WireFrame.png)
+
+Update 12/8/2020 - 12/10/2020
+	• Enemies have an attack function with a second function to create a triple firing pattern
+	• Enemy can move left and right on it's own across the play field
+	• Player can move left and right
+	• Player can fire bullets at the enemy with a controlled rate of one bullet per button press
+	• When a enemy bullet collides with a player, the game ends.
+	• When a player bullet collides with the enemy, the enemy is object is removed.
+	• Bullets are able to be color coordinated so they would not be confused for each other
+between enemy and player.
+	• Score function was added.
+	• When a enemy is hit by a bullet and destroyed, it adds 1 point to the score.
+
