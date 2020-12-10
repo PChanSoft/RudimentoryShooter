@@ -1,9 +1,13 @@
 var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
 
+//----------Start Game Initializer Values------------
+var startGame=false;
+var interval =0;
+
 //Player Properties
-var playerHeight=50
-var playerWidth=50
+var playerHeight=20
+var playerWidth=20
 var playerX=(canvas.width-playerWidth)/2;
 var playerY=canvas.height-playerHeight;
 var playerAlive=true;
@@ -15,8 +19,8 @@ var spacePressed = false;
 var keyChecker=0; //this variable
 
 //Enemy Values
-var enemyHeight=60
-var enemyWidth=60
+var enemyHeight=35
+var enemyWidth=35
 var enemyX=100
 var enemyY=200
 var enemyAlive=true;
@@ -41,7 +45,7 @@ var score=0;
 
 function theBullet(){ //constructor for the bullets
     this.color="blue"
-    this.posX=playerX+22; //when bullets are made, they grab the position of the player when the bullet is made, but will not update the X-axis past this point
+    this.posX=playerX+(playerWidth/2.5); //when bullets are made, they grab the position of the player when the bullet is made, but will not update the X-axis past this point
     this.posY=playerY;
     this.alive=true;
     this.init=function(){   
@@ -212,11 +216,26 @@ function drawEnemy(){
 function drawScore(){
     ctx.font = "16px Arial";
     ctx.fillStyle = "#0095DD";
-    ctx.fillText("Score: "+score,8,20)
+    ctx.fillText("Score: "+score,canvas.width/8,20)
 }
-
+//----------------Start of Putting stuff on screen Block----------------
 function draw(){
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+if(startGame===false){
+    ctx.font = "32px Arial";
+    ctx.textAlign='center'
+    ctx.fillStyle = "#0095DD";
+    ctx.fillText("Press Space to Start",canvas.width/2,canvas.height/2);
+    ctx.font= "11px Arial";
+    ctx.fillStyle = "black";
+    ctx.fillText("Made By: PChanSoft",canvas.width/2,canvas.height - 11);
+    ctx.font="52px Bahnschrift Light Condensed"
+    ctx.fillText("RUUDI SHOODI",canvas.width/2,canvas.height/4);
+    if(spacePressed){
+        startGame=true;
+    }
+
+}else if(startGame===true){
     update();
     render();
     enRender();
@@ -243,11 +262,13 @@ if(playerAlive===false){
         keyChecker++;
 
     }    
-
 }
-
-var interval = setInterval(draw,10)
+}
+//-------------This is what actually starts all the functions on load.
+// var interval = setInterval(draw,10) 
+    interval = setInterval(draw,10)
 //var enemyTimer=setInterval(enMakeBullet,4000)
+//-------------------End of the block---------------------------------
 
 
 //Lets make a bullet firing pattern for the enemies, to make it more challenging!
