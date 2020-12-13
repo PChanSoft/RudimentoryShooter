@@ -12,6 +12,7 @@ var playerWidth=20;
 var playerX=(canvas.width-playerWidth)/2;
 var playerY=canvas.height-playerHeight;
 var playerAlive=true;
+var playerSpeed=2;
 
 //keyboard key variable initialization
 var rightPressed = false;
@@ -28,6 +29,12 @@ var enemyY=200;
 var enemyAlive=true;
 var reachedRight=false;
 var enmBullet=[];
+var enBulletSpeed=3;
+var enemy2X=200;
+var enemy2Y=300;
+var enemyCount=2;
+var enHealth=20;
+var waveStatus=true;
 
 //Bullet Generator values
 var bulletWidth=10;
@@ -67,10 +74,16 @@ function theBullet(){ //constructor for the bullets
             this.alive=false;
         }
         //When the bullet collides with an enemy, we want stuff to happen, in this case, we want to remove the enemy when it gets "hit" and add to our score.
-        if(this.posX>enemyX && this.posX<enemyX+enemyWidth&& this.posY>enemyY && this.posY<enemyY+enemyHeight && enemyAlive){
-            enemyAlive=false;
-            score++;
-            this.alive=false;
+        for(let i=0; i<enWaveArr.length;i++){
+            let waveCheck=0;
+            if(this.posX > enWaveArr[i].posX && this.posX < enWaveArr[i].posX+enemyWidth && this.posY < enWaveArr[i].posY+enemyHeight && this.posY > enWaveArr[i].posY && enWaveArr[i].isAlive && this.alive===true){                
+                enWaveArr[i].life-=1;
+                console.log(enWaveArr[i].life)
+                this.alive=false;
+            }else if(enWaveArr[i].life === 0 && enWaveArr[i].isAlive){;
+                    enWaveArr[i].isAlive = false;
+                    score++;
+                }
         }
     };
 };
@@ -118,7 +131,7 @@ function enemBullet(enShipX,enShipY){
     };
     this.enUpdate=function(){//updates position of existing bullets
         if(this.bAlive){
-            this.bPosY+=speedY;
+            this.bPosY+=enBulletSpeed;
         }
         if(this.bPosY>canvas.height){
             this.bAlive=false;
@@ -189,26 +202,6 @@ function drawPlayer(){
     ctx.closePath;
     } 
 
-function drawEnemy(){
-    if(enemyAlive){
-    ctx.fillStyle= "red"; 
-    ctx.fill();
-    ctx.rect(enemyX,enemyY,enemyWidth,enemyHeight)
-        if(enemyX < canvas.width - enemyWidth && reachedRight===false){
-        enemyX+=5
-    }else if(enemyX === canvas.width-enemyWidth && reachedRight===false){
-        reachedRight=true;
-    }else if(enemyX > 0 && reachedRight===true){
-        enemyX-=5;
-    }else{
-        reachedRight=false;
-
-    }
-
-    
-    }
-}
-
 function drawScore(){
     ctx.font = "16px Arial";
     ctx.fillStyle = "#0095DD";
@@ -216,17 +209,19 @@ function drawScore(){
 }
 
 function enemyWave1(){
+    this.id=0;
     this.color='red';
     this.posX=100;
-    this.posY=200;
+    this.posY=100;
     this.isAlive=true;
-    this.life=5; 
+    this.life=enHealth; 
     this.reachedRight=false;
+    this.reachedLeft=false;
     this.init = function(){ 
         enWaveArr.push(this);
     };
     this.enMake=function (){
-        if(this.isAlive){
+        if(this.isAlive && this.id===0){
             if(this.posX < canvas.width - enemyWidth && this.reachedRight===false){
                 this.posX++;
             }else if(this.posX === canvas.width-enemyWidth && this.reachedRight===false){
@@ -236,14 +231,29 @@ function enemyWave1(){
             }else{
                 this.reachedRight=false;
             }  
+        }else if(this.isAlive && this.id===1){
+            this.posY=150;
+            if(this.posX > 0 && this.reachedLeft===false){
+                this.posX--;
+            }else if(this.posX < canvas.width-enemyWidth && this.reachedLeft===true){
+                this.posX ++;
+            }else if(this.posX === canvas.width-enemyWidth && this.reachedLeft===true){
+                this.reachedLeft=false;
+            }else if (this.posX === 0){
+                this.reachedLeft=true;
+            }
         }
     };
     this.enWaveRender=function(){
+        let fireChance=100
         if (this.isAlive){
             ctx.fillStyle= this.color; 
             ctx.fillRect(this.posX,this.posY,enemyWidth,enemyHeight);
-            let fireCheck = Math.floor(Math.random()*200)+1;
-            if(fireCheck===200){
+            ctx.font="18px Arial"
+            ctx.fillStyle='white';
+            ctx.fillText(`${this.life}`,this.posX+(enemyWidth/2),this.posY+(enemyHeight/2))
+            let fireCheck = Math.floor(Math.random()*fireChance)+1;
+            if(fireCheck===fireChance){
                 enMakeBullet(this.posX,this.posY);
             }
         }
@@ -251,12 +261,17 @@ function enemyWave1(){
 };
 
 function enWave1(){
+    if (enemyCount > 0){
     let newWave=new enemyWave1();
     newWave.init();
+    enemyCount--
+    }
 };
 function enMake(){
     for(let i=enWaveArr.length; i--;){
         enWaveArr[i].enMake();
+        let findIndex = enWaveArr.indexOf(enWaveArr[i],0);
+        enWaveArr[i].id=findIndex;
     }
 };
 function enWaveRender(){
@@ -289,12 +304,12 @@ if(startGame===false){
     update();
     render();
     //Time to join the functionality of enBullet creation with our enemy constructor to make sure bullets only fire from their respective enemies when it occurs... fun!
+    enWave1();
     enRender();
     enUpdate();
     drawPlayer();
     enMake();
     enWaveRender();
-
     drawScore()
 if(playerAlive===false){
     alert("GAME OVER")
@@ -303,16 +318,15 @@ if(playerAlive===false){
 }
     //keyboard functionality for the Player
     if(rightPressed && playerX < canvas.width - playerWidth){
-        playerX +=7;
+        playerX +=playerSpeed;
 
     }
     else if(leftPressed && playerX > 0){
-        playerX -=7;
+        playerX -=playerSpeed;
     }
     if(spacePressed && keyChecker === 0){ //keyChecker here prevents the button from activating more than once when it's held down, until it resets when the key comes back up.
         makeBullet();
         //enMakeBullet();
-        enWave1();
         keyChecker++;
 
     }    
@@ -323,21 +337,3 @@ if(playerAlive===false){
     interval = setInterval(draw,10)
 //var enemyTimer=setInterval(enMakeBullet,4000)
 //-------------------End of the block---------------------------------
-
-
-//Lets make a bullet firing pattern for the enemies, to make it more challenging!
-//Triple Fire
-function tripleFire(){
-    setTimeout(enMakeBullet,500);
-    setTimeout(enMakeBullet,1000);
-    setTimeout(enMakeBullet,1500);
-};
-
-//Lets make a function that aims something at the player dynamically
-// function angleToPlayer(dx,dy){
-//     let angle=atan2(dy,dx)
-
-
-// }
-
-//Testing time interval-This is to find a cleaner way to create timings and patterns. This will be run in the same timing as all our frames but this can be externally controlled without affecting other components.
