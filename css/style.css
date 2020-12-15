@@ -36,7 +36,7 @@ canvas{
 }
 #currentDifficulty{
     font-size:30px;
-    color:blue;
+    color:rgb(224, 67, 94);
     background-color: rgb(182, 182, 182);
 }
 .button{
