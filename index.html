@@ -8,9 +8,20 @@
 </head>
 <body>
     <canvas id="myCanvas" width="480" height="620"></canvas>
+    <form>
+    <input type="number" id="something" value="20">
+    <button type="button" onclick="setDifficulty(this.body)">Set Difficulty</button>
+    <button type="button" onclick="restartGame()">Reset the Game</button>
+    </form>
+    <p>You can set the difficulty by putting in a number and clicking the button.
+        <br>The button will be disabled during the time the game is in play.
+        <br> any value past 40 is a little masochistic.
+        <br>Controls:
+        <br>Move Left: Left Arrow Key
+        <br>Move Right: Right Arrow Key
+        <br>Shoot: Space Bar
+    </p>
     <script src="js/shooter.js">
     </script>
-    
 </body>
-</script>
 </html>
