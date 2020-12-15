@@ -1,2 +1,52 @@
-*{padding:0;margin:0;}
-canvas{background: rgb(109, 24, 143); display: block; margin:0 auto;border: solid 8px forestgreen}
+*{
+    padding:0;
+    margin:0;
+}
+canvas{
+    background: rgb(109, 24, 143); 
+    display: block; 
+    margin:0 auto;
+    border: solid 8px forestgreen
+}
+ #buttons{
+    display:block;
+    text-align:center;
+    margin-left:auto;
+    margin-right:auto;
+    margin-top:10px;
+}
+.explanation{
+    font-size:19px;
+}
+.class{
+    font-size:20px;
+}
+.controls{
+    margin-top:10px;
+    font-size:30px;
+}
+#Instructions{
+    display:block;
+    text-align:center;
+    margin-left:auto;
+    margin-right:auto;
+    margin-top:10px;
+    width:500px;
+    background-color:rgb(236, 236, 236)
+}
+#currentDifficulty{
+    font-size:30px;
+    color:blue;
+    background-color: rgb(182, 182, 182);
+}
+.button{
+    background-color:rgb(163, 103, 187);
+    color:white;
+    border:none;
+    font-size:18px;
+    padding:10px 10px;
+}
+input[type=number]{
+    padding:10px 10px;
+    font-size: 15px;
+}

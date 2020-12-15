@@ -8,19 +8,22 @@
 </head>
 <body>
     <canvas id="myCanvas" width="480" height="620"></canvas>
+    <div id="buttons">
     <form>
-    <input type="number" id="something" value="20">
-    <button type="button" onclick="setDifficulty(this.body)">Set Difficulty</button>
-    <button type="button" onclick="restartGame()">Reset the Game</button>
+    <input type="number" id="something" value="20" class="input">
+    <button type="button" class="button" onclick="setDifficulty(this.body)">Set Difficulty</button>
+    <button type="button" class="button" onclick="restartGame()">Reset the Game</button>
     </form>
-    <p>You can set the difficulty by putting in a number and clicking the button.
-        <br>The button will be disabled during the time the game is in play.
-        <br> any value past 40 is a little masochistic.
-        <br>Controls:
-        <br>Move Left: Left Arrow Key
-        <br>Move Right: Right Arrow Key
-        <br>Shoot: Space Bar
-    </p>
+    </div>
+    <div id="Instructions">
+        <div id="currentDifficulty" value="20">Current Difficulty: 20</div>
+        <div class="explanation">Input a number and click "Set Difficulty". This will change how much strong the enemies will be. You won't be able to do this once the game starts. You can reset the game at any time by clicking the "Reset the Game" button.</div>
+        <div class="controls">Here are the controls:
+        </div>
+        <div class="class">Move Left = Left Arrow Key</div>
+        <div class="class">Move Right = Right Arrow Key</div>
+        <div class="class">Shoot = Spacebar</div>
+    </div>
     <script src="js/shooter.js">
     </script>
 </body>

@@ -50,6 +50,7 @@ var waveMessage = false;
 
 function setDifficulty(){
     enHealth=document.getElementById('something').value;
+    document.getElementById('currentDifficulty').innerHTML=`Current Difficulty: ${enHealth}`;
 }
 
 
